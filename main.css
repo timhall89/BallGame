@@ -3,6 +3,7 @@
 body, html {
     height: 100%;
     margin: 0px;
+    cursor: none;
 }
 #container {
     height: 100%;
@@ -21,6 +22,17 @@ body, html {
     opacity: 0.8;
     width: 200px;
     height: 200px;
+}
+
+#pointer {
+    position: absolute;
+    left: 300px;
+    right: 20px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, rgb(136, 109, 167) 0%,rgb(32, 7, 44));
+  
+    width: 20px;
+    height: 20px;
 }
 .myCustom {
     background: linear-gradient(to bottom, rgba(233,246,253,1) 0%,rgba(211,238,251,1));

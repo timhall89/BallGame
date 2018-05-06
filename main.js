@@ -1,6 +1,7 @@
 const friction = 0.01
 
 var container = document.getElementById('container')
+var pointer = document.getElementById('pointer')
 
 function ClickIt() {
     window.alert(angle(-1,0))
@@ -17,16 +18,23 @@ function getY(length, angle){
     return Math.sin(angle) * length
 }
 
+
 var movingBox = {
     
     element: document.getElementById('moving'),
     speed: 0,
     angle: 0,
+    xspeed: 0,
+    yspeed: 0,
+    x: 0,
+    y: 0,
     move: function() {
 
         var xdiff = getX(this.speed, this.angle)
         var ydiff = getY(this.speed, this.angle)
-        
+        var x1 = 0
+        var y1 = 0
+
         if ((this.element.offsetLeft + xdiff) < 0) {
             this.element.style.left = '0px'
             this.angle = this.angle < 0 ? -Math.PI - this.angle : Math.PI - this.angle
@@ -60,6 +68,8 @@ var listen = true
 document.addEventListener('mousemove', function(event){
     x = event.clientX
     y = event.clientY
+    pointer.style.left = (x - 10) + 'px'
+    pointer.style.top = (y - 10) + 'px'
 })
 movingBox.element.addEventListener('mousemove', function(event){
     if (listen) {
