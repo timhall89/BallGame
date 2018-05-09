@@ -5,6 +5,13 @@ body, html {
     margin: 0px;
     cursor: none;
 }
+.fixedPoint {
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+    background: linear-gradient(to bottom, rgb(2, 3, 20) 0%,rgb(0, 0, 0));
+}
 #container {
     height: 100%;
     width: 100%;
@@ -13,7 +20,7 @@ body, html {
     position: relative;
     
 }
-#moving {
+.moving {
     position: absolute;
     left: 100px;
     top: 100px;
@@ -24,7 +31,7 @@ body, html {
     height: 200px;
 }
 
-#pointer {
+.pointer {
     position: absolute;
     left: 300px;
     right: 20px;
