@@ -2,35 +2,60 @@ const friction = 0.01
 const unit = 'px'
 const g = 9.81
 
-var boxHeight, boxWidth
-var container = document.getElementById('container')
-var pointer = document.getElementsByClassName('pointer')[0]
 
 var fixies = []
-fixies.push(newCircle(200, 400, 'fixedPoint', 14))
-fixies.push(newCircle(556, 400, 'fixedPoint', 14))
-fixies.push(newCircle(700, 400, 'fixedPoint', 14))
-console.log(fixies.length)
-for (var i in fixies) {
-    console.log(fixies[i].x)
+var movings = []
+console.log(5 % 4)
+var boxHeight, boxWidth
+var container = document.getElementById('container')
+
+movings.push(newCircle(100, 100, 'moving'))
+var pointer = newCircle(300, 100, 'pointer')
+console.log(pointer.offsetWidth)
+// Create some fixed points
+fixies.push(newCircle(200, 200, 'fixedPoint'))
+fixies.push(newCircle(700, 400, 'fixedPoint'))
+
+function CheckCollision(moving, fixie) {
+    var r = (moving.offsetWidth / 2) + (fixie.offsetWidth / 2)
+    var d = getSpeed(fixie.x - (moving.x + moving.xspeed), fixie.y - (moving.y + moving.yspeed))
+
+    if (d < r) moving.collision(fixie)
 }
 
+
+
+for (var f in fixies) {
+    console.log(fixies[f].x)
+}
+function CheckMovings(){
+    for (var m in movings) checkAMoving(m)
+}
+
+function checkAMoving(moving){
+    for (var f in fixies) CheckCollision(moving, f)
+    
+}
 function getAngle(y, x) {
     return Math.atan2(y, x)
 }
 
-function getX(length, angle){
-    return Math.cos(angle) * length
+function getXspeed(speed, angle){
+    return Math.cos(angle) * speed
 }
 
-function getY(length, angle){
-    return Math.sin(angle) * length
+function getYspeed(speed, angle){
+    return Math.sin(angle) * speed
+}
+
+function getSpeed(xspeed, yspeed){
+    return Math.sqrt(Math.pow(xspeed, 2) + Math.pow(yspeed, 2))
 }
 
 function newMoving(_xspeed = 0, _speed = 0) {
     var newC = newCircle
 }
-function newCircle(x, y, cls, r = 10){
+function newCircle(x, y, cls){
     var newdiv = document.createElement('div')
     newdiv.classList.add(cls)
     container.appendChild(newdiv)
@@ -46,10 +71,28 @@ function newCircle(x, y, cls, r = 10){
             this.y = _y
         }
     }
-    newdiv.move(x, y)
 
+    newdiv.move(x, y)
+    newdiv.xspeed = 0
+    newdiv.yspeed = 0
+
+    newdiv.collision = function(obj){
+        var angle = getAngle(this.xspeed, this.yspeed)
+        var speed = getSpeed(this.xspeed, this.yspeed)
+
+        var anglecol = getAngle(obj.x - this.x, obj.y - this.y)
+
+        var speedcol = getXspeed(speed, angle - anglecol)
+    }
     return newdiv
 }
+
+function ReverseAngle(angle) {
+    var modAngle = angle % 360
+    var flipAngle
+    if (modAngle < 0) 
+}
+
 function getBoxSize(){
     boxWidth = container.offsetWidth
     boxHeight = container.offsetHeight
@@ -68,8 +111,8 @@ var movingBox = {
     y: 0,
     move: function() {
 
-        var xdiff = getX(this.speed, this.angle)
-        var ydiff = getY(this.speed, this.angle)
+        var xdiff = getXspeed(this.speed, this.angle)
+        var ydiff = getYspeed(this.speed, this.angle)
         var x1 = 0
         var y1 = 0
 
