@@ -2,16 +2,22 @@ const friction = 0.01
 const unit = 'px'
 const g = 9.81
 
-
-var fixies = []
-var movings = []
-console.log(5 % 4)
+var mouseX, mouseY
 var boxHeight, boxWidth
 var container = document.getElementById('container')
 
-movings.push(newCircle(100, 100, 'moving'))
 var pointer = newCircle(300, 100, 'pointer')
-console.log(pointer.offsetWidth)
+
+var fixies = []
+var movings = []
+
+
+
+
+
+movings.push(newCircle(100, 100, 'moving'))
+
+
 // Create some fixed points
 fixies.push(newCircle(200, 200, 'fixedPoint'))
 fixies.push(newCircle(700, 400, 'fixedPoint'))
@@ -55,28 +61,29 @@ function getSpeed(xspeed, yspeed){
 function newMoving(_xspeed = 0, _speed = 0) {
     var newC = newCircle
 }
-function newCircle(x, y, cls){
-    var newdiv = document.createElement('div')
-    newdiv.classList.add(cls)
-    container.appendChild(newdiv)
 
-    newdiv.move = function(_x, _y){
+function newCircle(x, y, cls){
+    var cirle = document.createElement('div')
+    cirle.classList.add(cls)
+    container.appendChild(cirle)
+
+    cirle.move = function(_x, _y){
         if (this.x != _x) {
             this.style.left = _x + unit
             this.x = _x
         } 
 
         if (this.y != _y){
-            this.style.top = y + unit
+            this.style.top = _y + unit
             this.y = _y
         }
     }
 
-    newdiv.move(x, y)
-    newdiv.xspeed = 0
-    newdiv.yspeed = 0
+    cirle.move(x, y)
+    cirle.xspeed = 0
+    cirle.yspeed = 0
 
-    newdiv.collision = function(obj){
+    cirle.collision = function(obj){
         var angle = getAngle(this.xspeed, this.yspeed)
         var speed = getSpeed(this.xspeed, this.yspeed)
 
@@ -84,13 +91,13 @@ function newCircle(x, y, cls){
 
         var speedcol = getXspeed(speed, angle - anglecol)
     }
-    return newdiv
+    return cirle
 }
 
 function ReverseAngle(angle) {
     var modAngle = angle % 360
     var flipAngle
-    if (modAngle < 0) 
+    //if (modAngle < 0) 
 }
 
 function getBoxSize(){
@@ -148,10 +155,9 @@ var mousespeed
 var listen = true
 
 document.addEventListener('mousemove', function(event){
-    x = event.clientX
-    y = event.clientY
-    pointer.style.left = (x - 10) + unit
-    pointer.style.top = (y - 10) + unit
+    mouseX = event.clientX
+    mouseY = event.clientY
+    
 })
 movingBox.element.addEventListener('mousemove', function(event){
     if (listen) {
@@ -182,6 +188,8 @@ function start(){
 
 function refresh() {
     //window.alert('dddd')
+    pointer.move((mouseX - 10), (mouseY - 10))
+    
     mousespeed = Math.sqrt(Math.pow(x0 - x, 2) + Math.pow(y0 - y, 2)) / 4
     if (mousespeed < 5) mousespeed = 5
     x0 = x
